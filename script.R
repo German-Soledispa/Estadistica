@@ -138,3 +138,19 @@ ks.test(
   mean = mean(vida),
   sd   = sd(vida)
 )
+
+
+datos1 <- read.csv("Datos_Caso_1.csv")
+datos2 <- read.csv("Datos_Caso_2.csv")
+datos3 <- read.csv("Datos_Caso_3.csv")
+
+datos_total <- rbind(datos1, datos2, datos3)
+modelo <- lm(Vida_util_horas ~ Peso_kg + Distancia_m, data = datos_total)
+summary(modelo)
+
+res <- residuals(modelo)
+qqnorm(res)
+qqline(res, col = "red")
+shapiro.test(res) 
+plot(modelo, which = 1)
+plot(modelo, which = 2)
