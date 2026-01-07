@@ -5,7 +5,7 @@ tamanio_muestra = 200
 
 #Distana - Peso
 larga_alto = [700, 1000, 300, 600,]
-corta_alto = [700, 1000, 50, 150]
+corta_alto = [100, 300, 300, 600]
 corta_bajo = [100, 300, 50, 150]
 
 def DatosESt(num_ciclos, parametros):
@@ -77,4 +77,4 @@ while tamanio_muestra > i:
     i += 1
 
 df = pd.DataFrame(data_t)
-df.to_csv("pruebatesttanteo3.csv", index=False)
+df.to_csv("dataset(corta_bajo).csv", index=False)
