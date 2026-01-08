@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 
+np.random.seed(42)
 tamanio_muestra = 200
 
 #Distana - Peso
@@ -71,12 +72,19 @@ def DatosESt(num_ciclos, parametros):
 
     return data[-1]
 
-i = 0
-data_t = []
-while tamanio_muestra > i: 
-    dato = DatosESt(15000, larga_alto)
-    data_t.append(dato)
-    i += 1
+def archivos(caso, name):
+    i = 0
+    data_t = []
+    while tamanio_muestra > i: 
+        dato = DatosESt(15000, caso)
+        data_t.append(dato)
+        i += 1
 
-df = pd.DataFrame(data_t)
-df.to_csv("prueba1.csv", index=False)
+    df = pd.DataFrame(data_t)
+    df.to_csv(name, index=False)
+
+    return
+
+archivos(larga_alto, "data1.csv")
+archivos(corta_alto, "data2.csv")
+archivos(corta_bajo, "data3.csv")

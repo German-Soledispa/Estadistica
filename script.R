@@ -164,9 +164,14 @@ vif(modelo)
 # =====================================================
 
 # Cargar datos de prueba
-prueba <- read.csv("prueba3.csv")
+prueba <- read.csv("data3.csv")
+summary(prueba)
+round(cor(prueba), 2)
+round(cor(prueba[, c("peso_prom","dist_prom","corriente_prom","temp_prom","energia_consumida_prom")]),2)
+round(cor(prueba[, c("Ciclo","peso_prom","dist_prom","temp_prom")]),2)
 
 # Histograma
+par(mfrow = c(1,1))
 hist(prueba$Ciclo,
      main = "Histograma de la degradación",
      xlab = "Número de ciclos",
@@ -183,7 +188,7 @@ ciclo <- prueba$Ciclo
 ks.test(ciclo, "pnorm", mean = mean(ciclo), sd = sd(ciclo))
 
 # Modelo de regresión
-modelo <- lm(Ciclo ~ peso_prom + dist_prom + temp_prom, data = prueba)
+modelo <- lm(Ciclo ~ peso_prom + dist_prom, data = prueba)
 summary(modelo)
 
 # Residuos
