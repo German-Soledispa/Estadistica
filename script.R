@@ -5,6 +5,7 @@
 # Cargar librerías necesarias
 # lmtest: pruebas de independencia y homocedasticidad
 # car: diagnóstico de multicolinealidad
+
 library(lmtest)
 library(car)
 
@@ -163,7 +164,7 @@ vif(modelo)
 # =====================================================
 
 # Cargar datos de prueba
-prueba <- read.csv("prueba1.csv")
+prueba <- read.csv("prueba3.csv")
 
 # Histograma
 hist(prueba$Ciclo,
