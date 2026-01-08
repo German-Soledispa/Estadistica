@@ -58,7 +58,9 @@ def DatosESt(num_ciclos, parametros):
             data.append({
                 "Ciclo": ciclo,
                 "peso_prom":round(peso_prom,2),
+                "peso_total":round(peso_total),
                 "dist_prom":round(distancia_prom,2),
+                "dist_total":round(distancia_total),
                 "corriente_prom":round(corriente_prom,2),
                 "temp_prom":round(temp_prom,2),
                 "energia_consumida_prom":round(energia_consumida_prom,2),
