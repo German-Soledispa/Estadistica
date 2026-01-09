@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 np.random.seed(42)
-tamanio_muestra = 200
+tamanio_muestra = 100
 
 #Distana - Peso
 larga_alto = [300, 600, 600, 1000,]
@@ -85,6 +85,6 @@ def archivos(caso, name):
 
     return
 
-archivos(larga_alto, "data1.csv")
-archivos(corta_alto, "data2.csv")
-archivos(corta_bajo, "data3.csv")
+archivos(larga_alto, "dataDato1.csv")
+archivos(corta_alto, "dataDato2.csv")
+archivos(corta_bajo, "dataDato3.csv")
