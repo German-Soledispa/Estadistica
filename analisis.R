@@ -19,52 +19,55 @@ set.seed(123)
 # Cargar datos
 caso1 <- read.csv("data1.csv")
 
-#Calculo tamaño muestra
-sigma <- sd(caso1$Ciclo)
-E <- 2
-Z <- 1.96
-n <- ceiling((Z * sigma / E)^2)
-n
+caso1$SOH. <- NULL
 
-muestra <- caso1[sample(nrow(caso1), n), ]
+View(caso1)
 
-summary(muestra)
-
-muestra$SOH. <- NULL
-
-View(muestra)
-
-round(cor(muestra), 2)
-round(cor(muestra[, c("peso_prom","dist_prom","corriente_prom","temp_prom","energia_consumida_prom")]),2)
-round(cor(muestra[, c("Ciclo","peso_prom","dist_prom","temp_prom")]),2)
+round(cor(caso1), 2)
+round(cor(caso1[, c("peso_prom","dist_prom","corriente_prom","temp_prom","energia_consumida_prom")]),2)
+round(cor(caso1[, c("Ciclo","peso_prom","dist_prom","temp_prom")]),2)
 
 # Histograma
 par(mfrow = c(1,1))
-hist(muestra$Ciclo,
+hist(caso1$Ciclo,
      main = "Histograma de Ciclos",
      xlab = "Número de ciclos",
      col = "lightgreen")
 
 # Normalidad visual
-qqnorm(muestra$Ciclo)
-qqline(muestra$Ciclo, col = "red")
+qqnorm(caso1$Ciclo)
+qqline(caso1$Ciclo, col = "red")
 
 # Pruebas de normalidad
-shapiro.test(muestra$Ciclo)
+shapiro.test(caso1$Ciclo)
 
-ciclo <- muestra$Ciclo
+ciclo <- caso1$Ciclo
 ks.test(ciclo, "pnorm", mean = mean(ciclo), sd = sd(ciclo))
 
 # Modelo1 de regresión 
-modelo1 <- lm(Ciclo ~ peso_prom + dist_prom + corriente_prom + temp_prom + energia_consumida_prom, data = muestra)
+modelo1 <- lm(Ciclo ~ peso_prom + dist_prom + corriente_prom + temp_prom + energia_consumida_prom, data = caso1)
 summary(modelo1)
 
+# Multicolinealidad (Factor de Inflación de Varianza)
+vif(modelo1)
+
 # Modelo2 de regresión
-modelo2 <- lm(Ciclo ~ peso_prom + dist_prom, data = muestra)
+modelo2 <- lm(Ciclo ~ peso_prom + dist_prom + energia_consumida_prom, data = caso1)
 summary(modelo2)
 
+# Multicolinealidad (Factor de Inflación de Varianza)
+vif(modelo2)
+
+# Modelo3 de regresión
+modelo3 <- lm(Ciclo ~ peso_prom + dist_prom, data = caso1)
+summary(modelo2)
+
+# Multicolinealidad (Factor de Inflación de Varianza)
+vif(modelo3)
+
 #Verificamos cual es el modelo optimo
-AIC(modelo1,modelo2)
+AIC(modelo1,modelo2,modelo3)
+
 
 # Obtención de residuos del modelo
 res <- residuals(modelo2)
@@ -89,9 +92,6 @@ dwtest(modelo2)
 
 # Homocedasticidad (Breusch-Pagan)
 bptest(modelo2)
-
-# Multicolinealidad (Factor de Inflación de Varianza)
-vif(modelo2)
 
 Anova(modelo2)
 
@@ -102,49 +102,44 @@ Anova(modelo2)
 # Cargar datos
 caso2 <- read.csv("data2.csv")
 
-#Calculo tamaño muestra
-sigma <- sd(caso2$Ciclo)
-E <- 2
-Z <- 1.96
-n <- ceiling((Z * sigma / E)^2)
-n
+caso2$SOH. <- NULL
 
-muestra <- caso2[sample(nrow(caso2), n), ]
+View(caso2)
 
-summary(muestra)
-
-muestra$SOH. <- NULL
-
-View(muestra)
-
-round(cor(muestra), 2)
-round(cor(muestra[, c("peso_prom","dist_prom","corriente_prom","temp_prom","energia_consumida_prom")]),2)
-round(cor(muestra[, c("Ciclo","peso_prom","dist_prom","temp_prom")]),2)
+round(cor(caso2), 2)
+round(cor(caso2[, c("peso_prom","dist_prom","corriente_prom","temp_prom","energia_consumida_prom")]),2)
+round(cor(caso2[, c("Ciclo","peso_prom","dist_prom","temp_prom")]),2)
 
 # Histograma
 par(mfrow = c(1,1))
-hist(muestra$Ciclo,
+hist(caso2$Ciclo,
      main = "Histograma de Ciclos",
      xlab = "Número de ciclos",
      col = "lightgreen")
 
 # Normalidad visual
-qqnorm(muestra$Ciclo)
-qqline(muestra$Ciclo, col = "red")
+qqnorm(caso2$Ciclo)
+qqline(caso2$Ciclo, col = "red")
 
 # Pruebas de normalidad
-shapiro.test(muestra$Ciclo)
+shapiro.test(caso2$Ciclo)
 
-ciclo <- muestra$Ciclo
+ciclo <- caso2$Ciclo
 ks.test(ciclo, "pnorm", mean = mean(ciclo), sd = sd(ciclo))
 
 # Modelo1 de regresión 
-modelo1 <- lm(Ciclo ~ peso_prom + dist_prom + corriente_prom + temp_prom + energia_consumida_prom, data = muestra)
+modelo1 <- lm(Ciclo ~ peso_prom + dist_prom + corriente_prom + temp_prom + energia_consumida_prom, data = caso2)
 summary(modelo1)
 
+# Multicolinealidad (Factor de Inflación de Varianza)
+vif(modelo1)
+
 # Modelo2 de regresión
-modelo2 <- lm(Ciclo ~ peso_prom + dist_prom, data = muestra)
+modelo2 <- lm(Ciclo ~ peso_prom + dist_prom, data = caso2)
 summary(modelo2)
+
+# Multicolinealidad (Factor de Inflación de Varianza)
+vif(modelo2)
 
 #Verificamos cual es el modelo optimo
 AIC(modelo1,modelo2)
@@ -172,9 +167,6 @@ dwtest(modelo2)
 
 # Homocedasticidad (Breusch-Pagan)
 bptest(modelo2)
-
-# Multicolinealidad (Factor de Inflación de Varianza)
-vif(modelo2)
 
 Anova(modelo2)
 
@@ -185,24 +177,13 @@ Anova(modelo2)
 # Cargar datos
 caso3 <- read.csv("data3.csv")
 
-#Calculo tamaño muestra
-sigma <- sd(caso3$Ciclo)
-E <- 2
-Z <- 1.96
-n <- ceiling((Z * sigma / E)^2)
-n
+caso3$SOH. <- NULL
 
-muestra <- caso3[sample(nrow(caso3), n), ]
+View(caso3)
 
-summary(muestra)
-
-muestra$SOH. <- NULL
-
-#View(muestra)
-
-round(cor(muestra), 2)
-round(cor(muestra[, c("peso_prom","dist_prom","corriente_prom","temp_prom","energia_consumida_prom")]),2)
-round(cor(muestra[, c("Ciclo","peso_prom","dist_prom","temp_prom")]),2)
+round(cor(caso3), 2)
+round(cor(caso3[, c("peso_prom","dist_prom","corriente_prom","temp_prom","energia_consumida_prom")]),2)
+round(cor(caso3[, c("Ciclo","peso_prom","dist_prom","temp_prom")]),2)
 
 # Histograma
 par(mfrow = c(1,1))
@@ -212,25 +193,45 @@ hist(muestra$Ciclo,
      col = "lightgreen")
 
 # Normalidad visual
-qqnorm(muestra$Ciclo)
-qqline(muestra$Ciclo, col = "red")
+qqnorm(caso3$Ciclo)
+qqline(caso3$Ciclo, col = "red")
 
 # Pruebas de normalidad
-shapiro.test(muestra$Ciclo)
+shapiro.test(caso3$Ciclo)
 
-ciclo <- muestra$Ciclo
+ciclo <- caso3$Ciclo
 ks.test(ciclo, "pnorm", mean = mean(ciclo), sd = sd(ciclo))
 
 # Modelo1 de regresión 
-modelo1 <- lm(Ciclo ~ peso_prom + dist_prom + corriente_prom + temp_prom + energia_consumida_prom, data = muestra)
+modelo1 <- lm(Ciclo ~ peso_prom + dist_prom + corriente_prom + temp_prom + energia_consumida_prom, data = caso3)
 summary(modelo1)
 
-# Modelo2 de regresión
-modelo2 <- lm(Ciclo ~ peso_prom + dist_prom, data = muestra)
+# Multicolinealidad (Factor de Inflación de Varianza)
+vif(modelo1)
+
+# Modelo2 de regresión 
+modelo2 <- lm(Ciclo ~ peso_prom + dist_prom + corriente_prom + energia_consumida_prom, data = caso3)
 summary(modelo2)
 
+# Multicolinealidad (Factor de Inflación de Varianza)
+vif(modelo2)
+
+# Modelo3 de regresión 
+modelo3 <- lm(Ciclo ~ peso_prom + dist_prom + energia_consumida_prom, data = caso3)
+summary(modelo3)
+
+# Multicolinealidad (Factor de Inflación de Varianza)
+vif(modelo3)
+
+# Modelo4 de regresión
+modelo4 <- lm(Ciclo ~ peso_prom + dist_prom, data = caso3)
+summary(modelo4)
+
+# Multicolinealidad (Factor de Inflación de Varianza)
+vif(modelo4)
+
 #Verificamos cual es el modelo optimo
-AIC(modelo1,modelo2)
+AIC(modelo1,modelo2,modelo3,modelo4)
 
 # Obtención de residuos del modelo
 res <- residuals(modelo2)
@@ -255,8 +256,5 @@ dwtest(modelo2)
 
 # Homocedasticidad (Breusch-Pagan)
 bptest(modelo2)
-
-# Multicolinealidad (Factor de Inflación de Varianza)
-vif(modelo2)
 
 Anova(modelo2)
