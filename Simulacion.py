@@ -6,8 +6,8 @@ tamanio_muestra = 100
 
 #Distana - Peso
 larga_alto = [300, 600, 600, 1000,]
-corta_alto = [50, 300, 600, 1000]
-corta_bajo = [50, 300, 50, 400]
+corta_alto = [50, 299, 600, 1000]
+corta_bajo = [50, 299, 50, 599]
 
 def DatosESt(num_ciclos, parametros):
     data = []
@@ -41,11 +41,13 @@ def DatosESt(num_ciclos, parametros):
         temp_total += temp_bateria
 
         # 4. Consumo de energía
+        corriente *= (1 + 0.005*(temp_bateria-temp_ambiente))
         energia_consumida = corriente * (distancia / 1000)
         energia_total += energia_consumida
 
         # 5. Degradación del SOH
-        degradacion = energia_consumida * 0.02
+        f_termico = 1 + 0.01*(temp_bateria-temp_ambiente) #Factor termico que afecta a la batería
+        degradacion = energia_consumida * 0.02 * f_termico
         current_soh -= degradacion
 
         # 6. Condición de paro
@@ -85,6 +87,6 @@ def archivos(caso, name):
 
     return
 
-archivos(larga_alto, "dataDato1.csv")
-archivos(corta_alto, "dataDato2.csv")
-archivos(corta_bajo, "dataDato3.csv")
+archivos(larga_alto, "dataset1.csv")
+archivos(corta_alto, "dataset2.csv")
+archivos(corta_bajo, "dataset3.csv")
