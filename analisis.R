@@ -258,3 +258,88 @@ dwtest(modelo2)
 bptest(modelo2)
 
 Anova(modelo2)
+
+
+# =====================================================
+# PRUEBA
+# =====================================================
+
+# Cargar datos
+caso1 <- read.csv("dataDato3.csv")
+
+caso1$SOH. <- NULL
+
+View(caso1)
+
+round(cor(caso1), 2)
+round(cor(caso1[, c("peso_prom","dist_prom","corriente_prom","temp_prom")]),2)
+round(cor(caso1[, c("Ciclo","peso_prom","dist_prom","temp_prom")]),2)
+
+# Histograma
+par(mfrow = c(1,1))
+hist(caso1$Ciclo,
+     main = "Histograma de Ciclos",
+     xlab = "Número de ciclos",
+     col = "lightgreen")
+
+# Normalidad visual
+qqnorm(caso1$Ciclo)
+qqline(caso1$Ciclo, col = "red")
+
+# Pruebas de normalidad
+shapiro.test(caso1$Ciclo)
+
+ciclo <- caso1$Ciclo
+ks.test(ciclo, "pnorm", mean = mean(ciclo), sd = sd(ciclo))
+
+# Modelo1 de regresión 
+modelo1 <- lm(Ciclo ~ peso_prom + dist_prom + corriente_prom + temp_prom, data = caso1)
+summary(modelo1)
+
+# Multicolinealidad (Factor de Inflación de Varianza)
+vif(modelo1)
+
+# Modelo2 de regresión
+modelo2 <- lm(Ciclo ~ peso_prom + dist_prom + energia_consumida_prom, data = caso1)
+summary(modelo2)
+
+# Multicolinealidad (Factor de Inflación de Varianza)
+vif(modelo2)
+
+# Modelo3 de regresión
+modelo3 <- lm(Ciclo ~ peso_prom + dist_prom, data = caso1)
+summary(modelo3)
+
+# Multicolinealidad (Factor de Inflación de Varianza)
+vif(modelo3)
+
+#Verificamos cual es el modelo optimo
+AIC(modelo1,modelo2,modelo3)
+
+
+# Obtención de residuos del modelo
+res <- residuals(modelo3)
+
+# Normalidad de los errores (gráfico y prueba)
+qqnorm(res)
+qqline(res, col = "red")
+shapiro.test(res)
+
+# Linealidad y homocedasticidad (residuos vs ajustados)
+plot(modelo3, which = 1)
+
+# Normalidad de los residuos (Q-Q del modelo)
+plot(modelo3, which = 2)
+
+# Gráficos diagnósticos completos del modelo
+par(mfrow = c(2,2))
+plot(modelo3)
+
+# Independencia de los errores (Durbin-Watson)
+dwtest(modelo3)
+
+# Homocedasticidad (Breusch-Pagan)
+bptest(modelo3)
+
+Anova(modelo3)
+

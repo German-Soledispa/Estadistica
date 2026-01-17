@@ -6,8 +6,8 @@ tamanio_muestra = 100
 
 #Distana - Peso
 larga_alto = [300, 600, 600, 1000,]
-corta_alto = [50, 300, 600, 1000]
-corta_bajo = [50, 300, 50, 400]
+corta_alto = [50, 299, 600, 1000]
+corta_bajo = [50, 299, 50, 599]
 
 def DatosESt(num_ciclos, parametros):
     data = []
