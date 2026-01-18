@@ -5,9 +5,9 @@ np.random.seed(42)
 tamanio_muestra = 100
 
 #Distana - Peso
-larga_alto = [300, 600, 600, 1000,]
-corta_alto = [50, 299, 600, 1000]
-corta_bajo = [50, 299, 50, 599]
+larga_alto = [325, 600, 700, 1000]
+corta_alto = [25, 300, 700, 1000]
+corta_bajo = [25, 300, 50, 350]
 
 def DatosESt(num_ciclos, parametros):
     data = []
@@ -34,23 +34,16 @@ def DatosESt(num_ciclos, parametros):
         corriente = (peso_carga * 0.002) + (distancia * 0.001)
         corriente_total += corriente
 
-        # 3. Modelo térmico
-        temp_ambiente = 25  # °C
-        temp_current = (corriente * 0.5) + np.random.normal(0, 1)
-        temp_bateria = temp_ambiente + temp_current
-        temp_total += temp_bateria
-
-        # 4. Consumo de energía
-        corriente *= (1 + 0.005*(temp_bateria-temp_ambiente))
+        # 3. Consumo de energía
+        
         energia_consumida = corriente * (distancia / 1000)
         energia_total += energia_consumida
 
-        # 5. Degradación del SOH
-        f_termico = 1 + 0.01*(temp_bateria-temp_ambiente) #Factor termico que afecta a la batería
-        degradacion = energia_consumida * 0.02 * f_termico
+        # 4. Degradación del SOH
+        degradacion = energia_consumida * 0.02
         current_soh -= degradacion
 
-        # 6. Condición de paro
+        # 5. Condición de paro
         if current_soh <= 80:
             peso_prom = peso_total / ciclo
             distancia_prom = distancia_total / ciclo
@@ -87,6 +80,6 @@ def archivos(caso, name):
 
     return
 
-archivos(larga_alto, "dataset1.csv")
-archivos(corta_alto, "dataset2.csv")
-archivos(corta_bajo, "dataset3.csv")
+archivos(larga_alto, "datadato1.csv")
+archivos(corta_alto, "datadato2.csv")
+archivos(corta_bajo, "datadato3.csv")
