@@ -1,1 +1,1 @@
-[![Vista previa del PDF](./preview.png)](./PROYECTO_ESTADISTICA.pdf)
+[![Vista previa del PDF](./preview.png)](./ESTADISTICA_PROYECTO.pdf)
